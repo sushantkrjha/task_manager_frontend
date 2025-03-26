@@ -1,0 +1,20 @@
+.task-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .task-list .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+  }
+  
+  .task-list .list-group-item:hover {
+    background: #f8f9fa;
+  }
+  
+  .task-list button {
+    border-radius: 5px;
+  }
+  
