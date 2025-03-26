@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
 import { AuthContext } from "../context/AuthContext";
+import "../styles/Dashboard.css"; // Import CSS
 
 const Dashboard = () => {
   const { logout } = useContext(AuthContext);
@@ -9,27 +10,40 @@ const Dashboard = () => {
   const [editingTask, setEditingTask] = useState(null);
 
   const refreshTasks = () => {
-    setRefreshKey((prev) => prev + 1); // Triggers re-render to refresh task list
-    setEditingTask(null); // Reset editing mode after update
+    setRefreshKey((prev) => prev + 1);
+    setEditingTask(null);
   };
 
   return (
     <div className="container mt-5">
-      <div className="d-flex justify-content-between align-items-center">
-        <h2>Dashboard</h2>
-        <button className="btn btn-danger" onClick={logout}>Logout</button>
+      {/* Header Section */}
+      <div className="dashboard-header">
+        <h2> Task Dashboard</h2>
+        <button className="btn btn-danger btn-lg" onClick={logout}>
+          Logout 
+        </button>
       </div>
 
-      {/* Task Form: Handles Adding and Updating Tasks */}
-      <TaskForm 
-        onTaskAdded={refreshTasks} 
-        onTaskUpdated={refreshTasks} 
-        editingTask={editingTask} 
-        setEditingTask={setEditingTask}
-      />
+      {/* Content Section */}
+      <div className="row mt-4">
+        <div className="col-md-4">
+          <div className="card">
+            <div className="card-header bg-primary text-white">{editingTask ? "✏️ Edit Task" : ""}</div>
+            <div className="card-body">
+              <TaskForm onTaskAdded={refreshTasks} onTaskUpdated={refreshTasks} editingTask={editingTask} setEditingTask={setEditingTask} />
+            </div>
+          </div>
+        </div>
 
-      {/* Task List: Allows selecting a task for editing */}
-      <TaskList key={refreshKey} setEditingTask={setEditingTask} />
+        <div className="col-md-8">
+          <div className="card">
+            <div className="card-header bg-dark text-white">Task List</div>
+            <div className="card-body">
+              <TaskList key={refreshKey} setEditingTask={setEditingTask} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

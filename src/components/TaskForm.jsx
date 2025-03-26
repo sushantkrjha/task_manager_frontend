@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { addTask, updateTask } from "../api/tasks";
+import "../styles/TaskForm.css"; // Import CSS
 
 const TaskForm = ({ onTaskAdded, onTaskUpdated, editingTask, setEditingTask }) => {
   const [title, setTitle] = useState("");
@@ -28,7 +29,7 @@ const TaskForm = ({ onTaskAdded, onTaskUpdated, editingTask, setEditingTask }) =
       if (editingTask) {
         await updateTask(editingTask.id, { title, description, completed, category });
         onTaskUpdated();
-        setEditingTask(null);  // Reset form after update
+        setEditingTask(null);
       } else {
         await addTask({ title, description, completed, category });
         onTaskAdded();
@@ -44,24 +45,49 @@ const TaskForm = ({ onTaskAdded, onTaskUpdated, editingTask, setEditingTask }) =
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", maxWidth: "400px" }}>
-      <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Task Title" required />
+    <form onSubmit={handleSubmit} className="task-form">
+      <input
+        type="text"
+        className="form-control"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Task Title"
+        required
+      />
 
-      <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Task Description" required></textarea>
+      <textarea
+        className="form-control"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Task Description"
+        required
+      ></textarea>
 
-      <label>
-        <input type="checkbox" checked={completed} onChange={(e) => setCompleted(e.target.checked)} />
+      <label className="form-check-label">
+        <input
+          type="checkbox"
+          className="form-check-input"
+          checked={completed}
+          onChange={(e) => setCompleted(e.target.checked)}
+        />
         Completed
       </label>
 
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="Work">Work</option>
         <option value="Personal">Personal</option>
         <option value="Urgent">Urgent</option>
       </select>
 
-      <button type="submit">{editingTask ? "Update Task" : "Add Task"}</button>
-      {editingTask && <button type="button" onClick={() => setEditingTask(null)}>Cancel</button>}
+      <button type="submit" className="btn btn-primary btn-block">
+        {editingTask ? "Update Task" : "Add Task"}
+      </button>
+
+      {editingTask && (
+        <button type="button" className="btn btn-secondary btn-block mt-2" onClick={() => setEditingTask(null)}>
+          Cancel
+        </button>
+      )}
     </form>
   );
 };
